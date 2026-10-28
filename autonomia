@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototipo VEI - Autonomía Cognitiva</title>
+    <!-- Evita que el navegador traduzca variables técnicas de JavaScript -->
+    <meta name="google" content="notranslate">
+    
+    <style>
+        :root {
+            --fondo: #0f172a; /* Fondo oscuro que reduce la fatiga visual */
+            --texto: #ffffff;
+            --primario: #38bdf8; /* Azul claro de alta luminancia */
+            --fuente-tamano: 20px; /* Letra inicial más grande para facilitar lectura */
+        }
+        body.alto-contraste {
+            --fondo: #000000;
+            --texto: #ffff00; /* Amarillo sobre negro para máxima discriminación */
+            --primario: #00ffff;
+        }
+        body {
+            background-color: var(--fondo);
+            color: var(--texto);
+            font-family: Arial, sans-serif;
+            font-size: var(--fuente-tamano);
+            line-height: 1.5;
+            margin: 0;
+            padding: 15px;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        .contenedor-autonomia {
+            max-width: 500px;
+            margin: 0 auto;
+            border: 3px solid var(--primario);
+            border-radius: 16px;
+            padding: 20px;
+            background-color: #1e293b;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+        .panel-accesibilidad {
+            background-color: #0f172a;
+            border: 2px solid var(--primario);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn-acc {
+            background-color: #334155;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            min-width: 44px;
+            min-height: 44px;
+        }
+        body.alto-contraste .btn-acc {
+            background-color: #000000;
+            color: var(--texto);
+            border: 2px solid var(--texto);
+        }
+        /* Tarjetas de Comunicación Grandes (Sistemas Aumentativos) */
+        .tarjeta-comunicacion {
+            background-color: #020617;
+            border: 4px solid #22c55e; /* Borde verde de validación */
+            border-radius: 16px;
+            padding: 25px 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .tarjeta-comunicacion:active {
+            transform: scale(0.96);
+        }
+        .tarjeta-alerta {
+            border-color: #ef4444; /* Borde rojo para llamadas de atención */
+            background-color: #1e1b4b;
+        }
+        .emoji-gigante {
+            font-size: 4.5rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+        .texto-lectura-facil {
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+        .subtexto-apoyo {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            margin-top: 5px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-autonomia">
+        <!-- BOTÓN RETORNO ACCESIBLE -->
+        <a href="index.html" style="color: var(--primario); text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 15px;" aria-label="Volver al inicio">⬅️ Volver</a>
+
+        <!-- PANEL INTERACTIVO SIMPLIFICADO -->
+        <header class="panel-accesibilidad" aria-label="Controles">
+            <button class="btn-acc" onclick="cambiarContraste()">🌓 Contraste</button>
+            <button class="btn-acc" onclick="modificarTexto(2)">A+ Letra</button>
+            <button class="btn-acc" onclick="modificarTexto(-2)">A- Letra</button>
+            <button class="btn-acc" onclick="restablecer()">🔄 Reset</button>
+        </header>
+
+        <main>
+            <p style="font-size: 1rem; color: #94a3b8; text-align: center; margin-top: 0; margin-bottom: 20px;">
+                🖐️ Toca una tarjeta para escuchar su voz y confirmar la acción.
+            </p>
+
+            <!-- TARJETA 1: CONFIRMACIÓN DE ESPACIO (SALA) -->
+            <div class="tarjeta-comunicacion" onclick="comunicarEspacio()" aria-label="Confirmar ubicación de Sala">
+                <span class="emoji-gigante" aria-hidden="true">🚪</span>
+                <h2 class="texto-lectura-facil">ESTA ES LA SALA</h2>
+                <p class="subtexto-apoyo">Aquí puedes entrar</p>
+            </div>
+
+            <!-- TARJETA 2: CONFIRMACIÓN DE BIENESTAR / ACCIÓN -->
+            <div class="tarjeta-comunicacion" style="border-color: #38bdf8; background-color: #0c4a6e;" onclick="comunicarAsiento()" aria-label="Confirmar lugar para sentarse">
+                <span class="emoji-gigante" aria-hidden="true">🪑</span>
+                <h2 class="texto-lectura-facil">AQUÍ HAY ASIENTO</h2>
+                <p class="subtexto-apoyo" style="color: #7dd3fc;">Puedes sentarte a descansar</p>
+            </div>
+
+            <!-- TARJETA 3: BOTÓN DE VOZ PARA COMUNICACIÓN / ALERTA -->
+            <div class="tarjeta-comunicacion tarjeta-alerta" onclick="comunicarAyuda()" aria-label="Pedir ayuda">
+                <span class="emoji-gigante" aria-hidden="true">🙋‍♀️</span>
+                <h2 class="texto-lectura-facil" style="color: #fca5a5;">NECESITO AYUDA</h2>
+                <p class="subtexto-apoyo" style="color: #cbd5e1;">Llamar a un familiar</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- MOTOR DE PROGRAMACIÓN SENSORIAL Y SÍNTESIS DE VOZ -->
+    <script>
+        let tamanoActual = 20;
+
+        function dispararHaptica(patron) {
+            if ("vibrate" in navigator) {
+                navigator.vibrate(patron || [40]);
+            }
+        }
+
+        function cambiarContraste() { 
+            document.body.classList.toggle('alto-contraste'); 
+            dispararHaptica([60]); 
+        }
+
+        function modificarTexto(valor) {
+            if ((tamanoActual + valor) >= 16 && (tamanoActual + valor) <= 36) {
+                tamanoActual += valor;
+                document.documentElement.style.setProperty('--fuente-tamano', tamanoActual + 'px');
+                dispararHaptica([40]);
+            }
+        }
+
+        function restablecer() {
+            tamanoActual = 20;
+            document.documentElement.style.setProperty('--fuente-tamano', '20px');
+            document.body.classList.remove('alto-contraste');
+            dispararHaptica([40, 40, 40]);
+        }
+
+        // LÓGICA DE ESTIMULACIÓN Y ASOCIACIÓN VISO-TÁCTIL-AUDITIVA
+
+        function comunicarEspacio() {
+            let voz = new SpeechSynthesisUtterance("Estás en la sala. Entorno confirmado.");
+            voz.lang = "es-MX";
+            voz.rate = 0.9; // Voz pausada para lectura fácil
+            window.speechSynthesis.speak(voz);
+            
+            // Vibración continua lisa para dar seguridad de estabilidad en el lugar
+            dispararHaptica([200]);
+        }
+
+        function comunicarAsiento() {
+            let voz = new SpeechSynthesisUtterance("Aquí hay un asiento disponible para descansar.");
+            voz.lang = "es-MX";
+            voz.rate = 0.9;
+            window.speechSynthesis.speak(voz);
+            
+            // Dos pulsos suaves de confirmación táctil pasiva
+            dispararHaptica([100, 50, 100]);
+        }
+
+        function comunicarAyuda() {
+            let voz = new SpeechSynthesisUtterance("Atención, necesito ayuda por favor.");
+            voz.lang = "es-MX";
+            voz.rate = 0.95;
+            window.speechSynthesis.speak(voz);
+            
+            // Pulso fuerte de alerta táctil intermitente de alta frecuencia
+            dispararHaptica([300, 100, 300, 100, 300]);
+        }
+    </script>
+</body>
+</html>
